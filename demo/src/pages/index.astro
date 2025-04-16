@@ -1,11 +1,26 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Demostración de Astro">
+  <div class="py-10 text-center">
+    <h1 class="text-4xl font-bold mb-4">
+      <span
+        class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500"
+        >Astro</span
+      > Demo
+    </h1>
+
+    <div class="flex justify-center mt-12">
+      <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition">
+        <div class="text-4xl mb-4">🚀</div>
+        <h2 class="text-xl font-semibold mb-2">
+          Esta página está hecha con Astro (.astro)
+        </h2>
+        <p class="text-gray-400">
+          Combina la sintaxis de HTML con JavaScript para construir componentes
+        </p>
+      </div>
+    </div>
+  </div>
 </Layout>
