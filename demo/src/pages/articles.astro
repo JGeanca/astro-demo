@@ -1,0 +1,51 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const articles = await getCollection("articles");
+---
+
+<Layout title="Content Collections">
+  <main>
+    <h1
+      class="text-4xl font-bold text-center mt-6 mb-12 bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+    >
+      Artículos
+    </h1>
+
+    <section aria-label="Artículos" class="mx-auto max-w-6xl">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {
+          articles.map((article) => {
+            const { title, description, img } = article.data;
+            return (
+              <article class="bg-gray-800/70 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg border border-gray-700/50 hover:border-indigo-500/50 transition-all duration-300 flex flex-col h-full group">
+                <div class="relative overflow-hidden">
+                  <img
+                    src={img}
+                    alt={title}
+                    class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-50" />
+                </div>
+
+                <div class="p-6 flex flex-col flex-grow">
+                  <h2 class="text-2xl font-bold text-white mb-3 group-hover:text-indigo-300 transition-colors duration-300">
+                    {title}
+                  </h2>
+                  <p class="text-gray-300 mb-6 flex-grow">{description}</p>
+                  <a
+                    href={`/articles/${article.slug}`}
+                    class="mt-auto inline-flex items-center px-4 py-2 rounded-lg bg-indigo-600/80 hover:bg-indigo-500 text-white font-medium transition-colors duration-300"
+                  >
+                    Leer más
+                  </a>
+                </div>
+              </article>
+            );
+          })
+        }
+      </div>
+    </section>
+  </main>
+</Layout>
