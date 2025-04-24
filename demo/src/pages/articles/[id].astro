@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
+import LeftArrowIcon from "../../assets/left-arrow.astro";
 
 export async function getStaticPaths() {
   const articles = await getCollection("articles");
@@ -11,17 +12,118 @@ export async function getStaticPaths() {
 }
 
 const { article } = Astro.props;
-const { title, description, img } = article.data;
+const { title, description, img, date, author } = article.data;
+const { Content } = await article.render();
+
+const formattedDate = date
+  ? new Date(date).toLocaleDateString("es-ES", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+  : "";
 ---
 
 <Layout title={title}>
-  <div class="flex gap-8">
-    <aside>
+  <article class="max-w-6xl mx-auto">
+    <div class="relative rounded-xl overflow-hidden shadow-xl mb-8">
       <img
-        class="w-full h-full rounded-lg shadow-lg"
+        transition:name={`img-${article.slug}`}
         src={`/${img}`}
         alt={title}
+        class="w-full h-64 object-cover"
       />
-    </aside>
-  </div>
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"
+      >
+      </div>
+      <div class="absolute bottom-0 left-0 right-0 p-6">
+        <h1
+          transition:name={`title-${article.slug}`}
+          class="text-3xl font-bold text-white mb-2"
+        >
+          {title}
+        </h1>
+        {
+          author && (
+            <div class="text-indigo-200 text-sm mb-2">Por: {author}</div>
+          )
+        }
+        {
+          formattedDate && (
+            <div class="text-indigo-200 text-sm mb-2">{formattedDate}</div>
+          )
+        }
+        <p class="text-gray-300 text-base">{description}</p>
+      </div>
+    </div>
+
+    <div
+      class="bg-gray-800/60 rounded-xl p-6 shadow-lg border border-gray-700/40"
+    >
+      <div class="article-content prose prose-invert max-w-none">
+        <Content />
+      </div>
+
+      <div class="mt-8 pt-4 border-t border-gray-700/40 text-right">
+        <a
+          href="/articles"
+          class="inline-flex items-center px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition"
+        >
+          <LeftArrowIcon />
+          Volver a artículos
+        </a>
+      </div>
+    </div>
+  </article>
 </Layout>
+
+<style>
+  .article-content :global(h1) {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    color: #a5b4fc; /* indigo-300 */
+  }
+
+  .article-content :global(h2) {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: #a5b4fc; /* indigo-300 */
+  }
+
+  .article-content :global(p) {
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+    color: #e2e8f0; /* gray-200 */
+  }
+
+  .article-content :global(strong) {
+    font-weight: bold;
+    color: #c7d2fe; /* indigo-200 */
+  }
+
+  .article-content :global(ul),
+  .article-content :global(ol) {
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+  }
+
+  .article-content :global(ul) {
+    list-style-type: disc;
+  }
+
+  .article-content :global(ol) {
+    list-style-type: decimal;
+  }
+
+  .article-content :global(li) {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    color: #cbd5e1; /* gray-300 */
+  }
+</style>

@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
+import RightArrow from "../assets/right-arrow.astro";
 
 const articles = await getCollection("articles");
 ---
@@ -22,6 +23,7 @@ const articles = await getCollection("articles");
               <article class="bg-gray-800/70 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg border border-gray-700/50 hover:border-indigo-500/50 transition-all duration-300 flex flex-col h-full group">
                 <div class="relative overflow-hidden">
                   <img
+                    transition:name={`img-${article.slug}`}
                     src={img}
                     alt={title}
                     class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-105"
@@ -30,15 +32,19 @@ const articles = await getCollection("articles");
                 </div>
 
                 <div class="p-6 flex flex-col flex-grow">
-                  <h2 class="text-2xl font-bold text-white mb-3 group-hover:text-indigo-300 transition-colors duration-300">
+                  <h2
+                    transition:name={`title-${article.slug}`}
+                    class="text-2xl font-bold text-white mb-3 group-hover:text-indigo-300 transition-colors duration-300"
+                  >
                     {title}
                   </h2>
                   <p class="text-gray-300 mb-6 flex-grow">{description}</p>
                   <a
                     href={`/articles/${article.slug}`}
-                    class="mt-auto inline-flex items-center px-4 py-2 rounded-lg bg-indigo-600/80 hover:bg-indigo-500 text-white font-medium transition-colors duration-300"
+                    class="mt-auto inline-flex items-center px-4 py-2 rounded-lg bg-indigo-600/80 hover:bg-indigo-500/90 text-white font-medium transition-all duration-300 hover:shadow-md hover:translate-x-0.5"
                   >
                     Leer más
+                    <RightArrow />
                   </a>
                 </div>
               </article>
